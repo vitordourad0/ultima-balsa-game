@@ -1,0 +1,44 @@
+{
+  "name": "UltimaBalsa",
+  "tree": {
+    "$className": "DataModel",
+    "Workspace": {
+      "$className": "Workspace",
+      "$properties": { "Gravity": 196.2, "FallenPartsDestroyHeight": -100 },
+      "Porto": { "$path": "src/map/Porto.rbxmx" }
+    },
+    "Lighting": {
+      "$className": "Lighting",
+      "$properties": {
+        "ClockTime": 15.25,
+        "Brightness": 2.5,
+        "Ambient": [0.49, 0.53, 0.61],
+        "OutdoorAmbient": [0.52, 0.58, 0.65],
+        "FogColor": [0.69, 0.81, 0.86],
+        "FogStart": 820,
+        "FogEnd": 1600
+      }
+    },
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "Race": { "$path": "src/server" }
+    },
+    "StarterGui": {
+      "$className": "StarterGui",
+      "$properties": { "ScreenOrientation": "LandscapeSensor" }
+    },
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "$properties": {
+        "CharacterWalkSpeed": 16,
+        "CharacterUseJumpPower": true,
+        "CharacterJumpPower": 57,
+        "CameraMaxZoomDistance": 20
+      },
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "RaceHud": { "$path": "src/client/RaceHud.client.luau" }
+      }
+    }
+  }
+}

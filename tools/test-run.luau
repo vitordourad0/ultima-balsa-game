@@ -1,0 +1,47 @@
+local Run = require("../src/server/Run")
+
+local function reachFinish(state, now)
+	assert(Run.checkpoint(state, 1))
+	assert(Run.checkpoint(state, 2))
+	assert(Run.checkpoint(state, 3))
+	assert(Run.finish(state, now))
+end
+
+local first = Run.new()
+local second = Run.new()
+
+assert(not Run.checkpoint(first, 1))
+assert(not Run.finish(first, 1))
+assert(Run.start(first, 100))
+assert(Run.start(second, 110))
+assert(not Run.start(first, 111))
+assert(not Run.checkpoint(first, 2))
+assert(not Run.finish(first, 120))
+assert(Run.checkpoint(second, 1))
+assert(not Run.checkpoint(second, 1))
+assert(not Run.checkpoint(second, 3))
+assert(first.checkpoint == 0 and second.checkpoint == 1)
+
+reachFinish(first, 174)
+assert(first.finishedIn == 74 and first.best == 74)
+assert(not Run.finish(first, 175))
+assert(second.phase == "running" and second.startedAt == 110 and second.best == 0)
+
+Run.restart(first)
+assert(first.phase == "ready" and first.checkpoint == 0 and first.best == 74)
+assert(first.startedAt == 0 and first.finishedIn == 0 and first.attempts == 1)
+assert(Run.start(first, 180) and first.attempts == 2)
+reachFinish(first, 247)
+assert(first.best == 67)
+
+Run.restart(first)
+assert(Run.start(first, 250))
+reachFinish(first, 329)
+assert(first.finishedIn == 79 and first.best == 67)
+
+assert(Run.checkpoint(second, 2))
+assert(Run.checkpoint(second, 3))
+assert(not Run.checkpoint(second, 4))
+assert(Run.finish(second, 188))
+assert(second.finishedIn == 78 and second.best == 78 and second.attempts == 1)
+print("OK: sequência, chegada, dois corredores, nova tentativa e recorde da sessão")
